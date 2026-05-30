@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { WandSparkles } from 'lucide-react';
+import { MessageCircleHeart } from 'lucide-react';
 
 type HeroProps = {
   onPickCard: () => void;
@@ -26,7 +26,10 @@ export const Hero = ({ onPickCard }: HeroProps) => {
         <span className='absolute -inset-3 rounded-full border border-white/15 opacity-50 transition group-hover:scale-105 group-hover:opacity-25' />
         <span className='absolute inset-0 rounded-full bg-radial-[circle_at_35%_25%] from-white/35 via-transparent to-transparent' />
         <span className='relative flex h-full flex-col items-center justify-center gap-2 sm:gap-3'>
-          <WandSparkles className='h-8 w-8 sm:h-9 sm:w-9' aria-hidden='true' />
+          <MessageCircleHeart
+            className='h-8 w-8 sm:h-9 sm:w-9'
+            aria-hidden='true'
+          />
           {t('ui.pickCardLine1')}
           <br />
           {t('ui.pickCardLine2')}
