@@ -19,30 +19,30 @@ export const CardModal = ({
 
   return (
     <section
-      className='fixed inset-0 z-20 grid place-items-center bg-black/55 px-6 py-8 backdrop-blur-xl'
+      className='fixed inset-0 z-20 grid place-items-center bg-black/55 px-4 py-6 backdrop-blur-xl sm:px-6 sm:py-8'
       aria-modal='true'
       role='dialog'
     >
       <button
         type='button'
         onClick={onClose}
-        className='absolute right-5 top-5 rounded-full border border-white/10 bg-white/10 p-3 text-white/80 backdrop-blur transition hover:bg-white/15'
+        className='absolute right-4 top-[max(1rem,env(safe-area-inset-top))] z-30 rounded-full border border-white/10 bg-white/10 p-3 text-white/80 backdrop-blur transition hover:bg-white/15 sm:right-5 sm:top-5'
         aria-label={t('ui.closeCard')}
       >
         <X className='h-5 w-5' aria-hidden='true' />
       </button>
 
-      <article className='animate-card-in relative flex h-[min(540px,78dvh)] w-full max-w-[380px] flex-col justify-between overflow-hidden rounded-[34px] border border-white/20 bg-white/10 p-7 shadow-[0_30px_90px_rgba(0,0,0,0.45)] backdrop-blur'>
+      <article className='animate-card-in relative flex h-[min(540px,82dvh)] w-full max-w-[380px] flex-col justify-between overflow-hidden rounded-[28px] border border-white/20 bg-white/10 p-5 shadow-[0_30px_90px_rgba(0,0,0,0.45)] backdrop-blur sm:rounded-[34px] sm:p-7'>
         <div className='pointer-events-none absolute inset-0 bg-linear-to-br from-white/20 via-white/5 to-transparent' />
         <div className='pointer-events-none absolute -left-16 -top-16 h-48 w-48 rounded-full bg-fuchsia-400/40 blur-3xl' />
         <div className='pointer-events-none absolute -bottom-16 -right-16 h-56 w-56 rounded-full bg-violet-500/45 blur-3xl' />
-        <div className='pointer-events-none absolute inset-[1px] rounded-[33px] bg-[linear-gradient(rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:34px_34px] [mask-image:linear-gradient(to_bottom,black,transparent_70%)]' />
+        <div className='pointer-events-none absolute inset-[1px] rounded-[27px] bg-[linear-gradient(rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:34px_34px] [mask-image:linear-gradient(to_bottom,black,transparent_70%)] sm:rounded-[33px]' />
 
         <div className='relative z-10 grid flex-1 place-items-center text-center'>
           {!activeCard ? (
-            <div className='animate-question-float grid h-40 w-40 place-items-center rounded-[42px] bg-linear-to-br from-fuchsia-500 to-violet-500 shadow-[0_20px_70px_rgba(139,92,246,0.35)]'>
+            <div className='animate-question-float grid h-32 w-32 place-items-center rounded-[34px] bg-linear-to-br from-fuchsia-500 to-violet-500 shadow-[0_20px_70px_rgba(139,92,246,0.35)] sm:h-40 sm:w-40 sm:rounded-[42px]'>
               <HelpCircle
-                className='h-24 w-24'
+                className='h-20 w-20 sm:h-24 sm:w-24'
                 strokeWidth={2.4}
                 aria-hidden='true'
               />

@@ -43,7 +43,7 @@ export const App = () => {
   }, []);
 
   return (
-    <main className='relative grid min-h-dvh place-items-center overflow-hidden bg-[#080610] px-6 py-8 text-white'>
+    <main className='relative grid min-h-dvh place-items-center overflow-hidden bg-[#080610] px-4 py-8 text-white sm:px-6 [padding-bottom:max(2rem,env(safe-area-inset-bottom))] [padding-top:max(2rem,env(safe-area-inset-top))]'>
       <BackgroundBlobs />
 
       <LanguageSwitcher />

@@ -5,7 +5,7 @@ export const LanguageSwitcher = () => {
   const { i18n } = useTranslation();
 
   return (
-    <div className="absolute right-4 top-4 z-1 flex gap-1 rounded-full border border-white/15 bg-white/10 p-1 backdrop-blur">
+    <div className="absolute right-4 top-[max(1rem,env(safe-area-inset-top))] z-1 flex gap-1 rounded-full border border-white/15 bg-white/10 p-1 backdrop-blur">
       {languages.map((lng) => (
         <button
           key={lng}
