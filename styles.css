@@ -1,0 +1,63 @@
+@import "tailwindcss";
+
+@theme {
+  --animate-card-in: card-in 450ms cubic-bezier(0.2, 0.9, 0.1, 1.2) both;
+  --animate-text-in: text-in 340ms ease both;
+  --animate-question-float: question-float 3.2s ease-in-out infinite;
+  --animate-blob: blob 9s ease-in-out infinite alternate;
+  --animate-blob-delayed: blob 9s ease-in-out 1.5s infinite alternate;
+  --animate-blob-slow: blob 11s ease-in-out 2.5s infinite alternate;
+
+  @keyframes card-in {
+    from {
+      opacity: 0;
+      transform: translateY(28px) scale(0.9) rotateY(-12deg);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1) rotateY(0deg);
+    }
+  }
+
+  @keyframes text-in {
+    from {
+      opacity: 0;
+      transform: translateY(14px) scale(0.98);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  @keyframes question-float {
+    0%,
+    100% {
+      transform: rotate(-4deg);
+    }
+
+    50% {
+      transform: rotate(5deg) scale(1.04);
+    }
+  }
+
+  @keyframes blob {
+    from {
+      transform: translate3d(0, 0, 0) scale(1);
+    }
+
+    to {
+      transform: translate3d(32px, -28px, 0) scale(1.12);
+    }
+  }
+}
+
+html {
+  background: #080610;
+}
+
+body {
+  min-width: 320px;
+}

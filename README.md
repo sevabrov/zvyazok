@@ -1,6 +1,6 @@
-# Truth or Dare — React + TypeScript + Vite + Tailwind v4
+# ZVYAZOK — React + TypeScript + Vite + Tailwind v4
 
-Мини-игра “Правда или Действие” для двоих.
+A mini "Truth or Dare" game for two players.
 
 ## Stack
 
@@ -8,9 +8,10 @@
 - TypeScript
 - Vite
 - Tailwind CSS v4
+- i18next / react-i18next (localization)
 - lucide-react
 
-## Запуск
+## Getting started
 
 ```bash
 npm install
@@ -23,24 +24,32 @@ npm run dev
 npm run build
 ```
 
-## Где менять карты
+## Where to edit the cards
 
-Файл:
+File:
 
 ```txt
 src/cards.ts
 ```
 
-Массивы:
+Arrays:
 
 ```ts
 truthCards
 dareCards
 ```
 
+## Localization
+
+The app uses `i18next` with `react-i18next`. Translations live in:
+
+```txt
+locales/
+```
+
 ## Tailwind v4
 
-Проект использует официальный Vite-плагин Tailwind:
+The project uses the official Tailwind Vite plugin:
 
 ```ts
 // vite.config.ts
@@ -51,7 +60,7 @@ export default defineConfig({
 });
 ```
 
-И один импорт в CSS:
+And a single import in CSS:
 
 ```css
 @import "tailwindcss";
