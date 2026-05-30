@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { Heart, HelpCircle, X, Zap } from 'lucide-react';
+import { Heart, HelpCircle, X } from 'lucide-react';
 import { ActiveCard, CardType } from '../types';
 
 type CardModalProps = {
@@ -50,14 +50,7 @@ export const CardModal = ({
           ) : (
             <div className='animate-text-in'>
               <div className='mb-5 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-4 py-2 text-xs font-black uppercase tracking-[0.22em] text-white/70'>
-                {activeCard.type === 'truth' ? (
-                  <Heart
-                    className='h-4 w-4 text-fuchsia-200'
-                    aria-hidden='true'
-                  />
-                ) : (
-                  <Zap className='h-4 w-4 text-violet-200' aria-hidden='true' />
-                )}
+                <Heart className='h-4 w-4 text-fuchsia-200' aria-hidden='true' />
                 {t(`ui.${activeCard.type}`)}
               </div>
 
@@ -70,30 +63,14 @@ export const CardModal = ({
 
         <div className='relative z-10'>
           {!activeCard ? (
-            <>
-              <div className='grid grid-cols-2 gap-3'>
-                <button
-                  type='button'
-                  onClick={() => onReveal('truth')}
-                  className='flex h-14 items-center justify-center gap-2 rounded-2xl border border-white/15 bg-white/10 text-base font-black backdrop-blur transition hover:bg-white/15'
-                >
-                  <Heart
-                    className='h-5 w-5 text-fuchsia-200'
-                    aria-hidden='true'
-                  />
-                  {t('ui.truth')}
-                </button>
-
-                <button
-                  type='button'
-                  onClick={() => onReveal('dare')}
-                  className='flex h-14 items-center justify-center gap-2 rounded-2xl border border-white/15 bg-white/10 text-base font-black backdrop-blur transition hover:bg-white/15'
-                >
-                  <Zap className='h-5 w-5 text-violet-200' aria-hidden='true' />
-                  {t('ui.dare')}
-                </button>
-              </div>
-            </>
+            <button
+              type='button'
+              onClick={() => onReveal('truth')}
+              className='flex h-14 w-full items-center justify-center gap-2 rounded-2xl border border-white/15 bg-white/10 text-base font-black backdrop-blur transition hover:bg-white/15'
+            >
+              <Heart className='h-5 w-5 text-fuchsia-200' aria-hidden='true' />
+              {t('ui.truth')}
+            </button>
           ) : (
             <button
               type='button'

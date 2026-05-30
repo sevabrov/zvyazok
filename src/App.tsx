@@ -39,7 +39,7 @@ export const App = () => {
 
   const revealCard = useCallback(
     (type: CardType) => {
-      const cards = t(type === 'truth' ? 'truthCards' : 'dareCards', {
+      const cards = t('truthCards', {
         returnObjects: true,
       }) as string[];
 

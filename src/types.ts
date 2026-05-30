@@ -1,4 +1,4 @@
-export type CardType = 'truth' | 'dare';
+export type CardType = 'truth';
 
 export type GameType =
   | 'warmth'
