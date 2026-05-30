@@ -13,6 +13,7 @@
     "closeCard": "Закрыть карту",
     "truth": "Открой карту",
     "chooseGameType": "Выберите тип вопросов",
+    "changeGameType": "Изменить тип вопросов",
     "gameTypes": {
       "warmth": "Тепло",
       "relationship": "Отношения",
@@ -20,7 +21,8 @@
       "parenthood": "Родительство",
       "spark": "Искра"
     },
-    "nextCard": "Следующая карта"
+    "nextCard": "Следующая карта",
+    "backToMain": "Назад"
   },
   "truthCards": {
     "warmth": [

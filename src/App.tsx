@@ -37,6 +37,12 @@ export const App = () => {
     setActiveCard(null);
   }, []);
 
+  const backToGameType = useCallback(() => {
+    setIsCardOpen(false);
+    setActiveCard(null);
+    setIsGameTypeOpen(true);
+  }, []);
+
   const revealCard = useCallback(() => {
     if (!gameType) return;
 
@@ -70,6 +76,7 @@ export const App = () => {
           activeCard={activeCard}
           gameType={gameType}
           onClose={closeCard}
+          onBack={backToGameType}
           onReveal={revealCard}
           onNext={nextCard}
         />

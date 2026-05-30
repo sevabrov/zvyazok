@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { Heart, HelpCircle, X } from 'lucide-react';
+import { ArrowLeft, HelpCircle, X } from 'lucide-react';
 import { ActiveCard, GameType } from '../types';
 import { GAME_TYPE_ICONS } from '../gameTypes';
 
@@ -7,6 +7,7 @@ type CardModalProps = {
   activeCard: ActiveCard;
   gameType: GameType;
   onClose: () => void;
+  onBack: () => void;
   onReveal: () => void;
   onNext: () => void;
 };
@@ -15,6 +16,7 @@ export const CardModal = ({
   activeCard,
   gameType,
   onClose,
+  onBack,
   onReveal,
   onNext,
 }: CardModalProps) => {
@@ -27,16 +29,26 @@ export const CardModal = ({
       aria-modal='true'
       role='dialog'
     >
-      <button
-        type='button'
-        onClick={onClose}
-        className='absolute right-4 top-[max(1rem,env(safe-area-inset-top))] z-30 rounded-full border border-white/10 bg-white/10 p-3 text-white/80 backdrop-blur transition hover:bg-white/15 sm:right-5 sm:top-5'
-        aria-label={t('ui.closeCard')}
-      >
-        <X className='h-5 w-5' aria-hidden='true' />
-      </button>
-
       <article className='animate-card-in relative flex h-[min(540px,82dvh)] w-full max-w-[380px] flex-col justify-between overflow-hidden rounded-[28px] border border-white/20 bg-white/10 p-5 shadow-[0_30px_90px_rgba(0,0,0,0.45)] backdrop-blur sm:rounded-[34px] sm:p-7'>
+        <div className='flex items-start justify-between'>
+          <button
+            type='button'
+            onClick={onBack}
+            className='relative top-[-10px] left-[-10px] rounded-full border border-white/10 bg-white/10 p-3 text-white/80 backdrop-blur transition hover:bg-white/15'
+            aria-label={t('ui.changeGameType')}
+          >
+            <ArrowLeft className='h-5 w-5' aria-hidden='true' />
+          </button>
+
+          <button
+            type='button'
+            onClick={onClose}
+            className='relative top-[-10px] right-[-10px] rounded-full border border-white/10 bg-white/10 p-3 text-white/80 backdrop-blur transition hover:bg-white/15'
+            aria-label={t('ui.closeCard')}
+          >
+            <X className='h-5 w-5' aria-hidden='true' />
+          </button>
+        </div>
         <div className='pointer-events-none absolute inset-0 bg-linear-to-br from-white/20 via-white/5 to-transparent' />
         <div className='pointer-events-none absolute -left-16 -top-16 h-48 w-48 rounded-full bg-fuchsia-400/40 blur-3xl' />
         <div className='pointer-events-none absolute -bottom-16 -right-16 h-56 w-56 rounded-full bg-violet-500/45 blur-3xl' />
