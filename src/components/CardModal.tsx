@@ -1,9 +1,11 @@
 import { useTranslation } from 'react-i18next';
 import { Heart, HelpCircle, X } from 'lucide-react';
-import { ActiveCard } from '../types';
+import { ActiveCard, GameType } from '../types';
+import { GAME_TYPE_ICONS } from '../gameTypes';
 
 type CardModalProps = {
   activeCard: ActiveCard;
+  gameType: GameType;
   onClose: () => void;
   onReveal: () => void;
   onNext: () => void;
@@ -11,11 +13,13 @@ type CardModalProps = {
 
 export const CardModal = ({
   activeCard,
+  gameType,
   onClose,
   onReveal,
   onNext,
 }: CardModalProps) => {
   const { t } = useTranslation();
+  const GameTypeIcon = GAME_TYPE_ICONS[gameType];
 
   return (
     <section
@@ -50,8 +54,11 @@ export const CardModal = ({
           ) : (
             <div className='animate-text-in'>
               <div className='mb-5 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-4 py-2 text-xs font-black uppercase tracking-[0.22em] text-white/70'>
-                <Heart className='h-4 w-4 text-fuchsia-200' aria-hidden='true' />
-                {t('ui.truth')}
+                <GameTypeIcon
+                  className='h-4 w-4 text-fuchsia-200'
+                  aria-hidden='true'
+                />
+                {t(`ui.gameTypes.${gameType}`)}
               </div>
 
               <p className='text-[clamp(1.65rem,7vw,2.25rem)] leading-[1.08] font-black tracking-[-0.055em]'>
@@ -68,7 +75,10 @@ export const CardModal = ({
               onClick={onReveal}
               className='flex h-14 w-full items-center justify-center gap-2 rounded-2xl border border-white/15 bg-white/10 text-base font-black backdrop-blur transition hover:bg-white/15'
             >
-              <Heart className='h-5 w-5 text-fuchsia-200' aria-hidden='true' />
+              <GameTypeIcon
+                className='h-5 w-5 text-fuchsia-200'
+                aria-hidden='true'
+              />
               {t('ui.truth')}
             </button>
           ) : (

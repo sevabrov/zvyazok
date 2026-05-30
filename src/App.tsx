@@ -65,9 +65,10 @@ export const App = () => {
         <GameTypeSelect onClose={closeGameType} onSelect={selectGameType} />
       )}
 
-      {isCardOpen && (
+      {isCardOpen && gameType && (
         <CardModal
           activeCard={activeCard}
+          gameType={gameType}
           onClose={closeCard}
           onReveal={revealCard}
           onNext={nextCard}

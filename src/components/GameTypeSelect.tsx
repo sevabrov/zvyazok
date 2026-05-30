@@ -1,19 +1,12 @@
 import { useTranslation } from 'react-i18next';
-import { Baby, Flame, Hand, HeartHandshake, Sparkles, X } from 'lucide-react';
+import { X } from 'lucide-react';
 import { GameType } from '../types';
+import { GAME_TYPE_ICONS, GAME_TYPES } from '../gameTypes';
 
 type GameTypeSelectProps = {
   onClose: () => void;
   onSelect: (type: GameType) => void;
 };
-
-const GAME_TYPES: { id: GameType; icon: typeof Flame }[] = [
-  { id: 'warmth', icon: Flame },
-  { id: 'relationship', icon: HeartHandshake },
-  { id: 'touch', icon: Hand },
-  { id: 'parenthood', icon: Baby },
-  { id: 'spark', icon: Sparkles },
-];
 
 export const GameTypeSelect = ({ onClose, onSelect }: GameTypeSelectProps) => {
   const { t } = useTranslation();
@@ -44,17 +37,24 @@ export const GameTypeSelect = ({ onClose, onSelect }: GameTypeSelectProps) => {
           </h2>
 
           <div className='grid gap-3'>
-            {GAME_TYPES.map(({ id, icon: Icon }) => (
-              <button
-                key={id}
-                type='button'
-                onClick={() => onSelect(id)}
-                className='flex h-14 items-center gap-3 rounded-2xl border border-white/15 bg-white/10 px-5 text-base font-black backdrop-blur transition hover:-translate-y-0.5 hover:bg-white/15 active:translate-y-0'
-              >
-                <Icon className='h-5 w-5 text-fuchsia-200' aria-hidden='true' />
-                {t(`ui.gameTypes.${id}`)}
-              </button>
-            ))}
+            {GAME_TYPES.map((id) => {
+              const Icon = GAME_TYPE_ICONS[id];
+
+              return (
+                <button
+                  key={id}
+                  type='button'
+                  onClick={() => onSelect(id)}
+                  className='flex h-14 items-center gap-3 rounded-2xl border border-white/15 bg-white/10 px-5 text-base font-black backdrop-blur transition hover:-translate-y-0.5 hover:bg-white/15 active:translate-y-0'
+                >
+                  <Icon
+                    className='h-5 w-5 text-fuchsia-200'
+                    aria-hidden='true'
+                  />
+                  {t(`ui.gameTypes.${id}`)}
+                </button>
+              );
+            })}
           </div>
         </div>
       </article>
