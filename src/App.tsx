@@ -13,7 +13,7 @@ import {
 export const App = () => {
   const { t } = useTranslation();
   const [isGameTypeOpen, setIsGameTypeOpen] = useState(false);
-  const [, setGameType] = useState<GameType | null>(null);
+  const [gameType, setGameType] = useState<GameType | null>(null);
   const [isCardOpen, setIsCardOpen] = useState(false);
   const [activeCard, setActiveCard] = useState<ActiveCard>(null);
 
@@ -39,7 +39,9 @@ export const App = () => {
 
   const revealCard = useCallback(
     (type: CardType) => {
-      const cards = t('truthCards', {
+      if (!gameType) return;
+
+      const cards = t(`truthCards.${gameType}`, {
         returnObjects: true,
       }) as string[];
 
@@ -48,7 +50,7 @@ export const App = () => {
         text: getRandomItem(cards),
       });
     },
-    [t],
+    [t, gameType],
   );
 
   const nextCard = useCallback(() => {
