@@ -22,7 +22,9 @@
       "spark": "Іскра"
     },
     "nextCard": "Наступна карта",
-    "backToMain": "Назад"
+    "backToMain": "Назад",
+    "allCardsDone": "Ви пройшли всі питання в цій категорії",
+    "chooseAnotherType": "Вибрати іншу категорію"
   },
   "truthCards": {
     "warmth": [

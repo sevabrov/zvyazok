@@ -1,11 +1,12 @@
 import { useTranslation } from 'react-i18next';
-import { ArrowLeft, HelpCircle, X } from 'lucide-react';
+import { ArrowLeft, CheckCircle2, HelpCircle, X } from 'lucide-react';
 import { ActiveCard, GameType } from '../types';
 import { GAME_TYPE_ICONS } from '../gameTypes';
 
 type CardModalProps = {
   activeCard: ActiveCard;
   gameType: GameType;
+  isFinished: boolean;
   onClose: () => void;
   onBack: () => void;
   onReveal: () => void;
@@ -15,6 +16,7 @@ type CardModalProps = {
 export const CardModal = ({
   activeCard,
   gameType,
+  isFinished,
   onClose,
   onBack,
   onReveal,
@@ -55,7 +57,20 @@ export const CardModal = ({
         <div className='pointer-events-none absolute inset-[1px] rounded-[27px] bg-[linear-gradient(rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:34px_34px] [mask-image:linear-gradient(to_bottom,black,transparent_70%)] sm:rounded-[33px]' />
 
         <div className='relative z-10 grid flex-1 place-items-center text-center'>
-          {!activeCard ? (
+          {isFinished ? (
+            <div className='animate-text-in flex flex-col items-center gap-5'>
+              <div className='grid h-32 w-32 place-items-center rounded-[34px] bg-linear-to-br from-fuchsia-500 to-violet-500 shadow-[0_20px_70px_rgba(139,92,246,0.35)] sm:h-40 sm:w-40 sm:rounded-[42px]'>
+                <CheckCircle2
+                  className='h-20 w-20 sm:h-24 sm:w-24'
+                  strokeWidth={2.4}
+                  aria-hidden='true'
+                />
+              </div>
+              <p className='text-[clamp(1.4rem,6vw,1.85rem)] leading-[1.12] font-black tracking-[-0.045em]'>
+                {t('ui.allCardsDone')}
+              </p>
+            </div>
+          ) : !activeCard ? (
             <div className='animate-question-float grid h-32 w-32 place-items-center rounded-[34px] bg-linear-to-br from-fuchsia-500 to-violet-500 shadow-[0_20px_70px_rgba(139,92,246,0.35)] sm:h-40 sm:w-40 sm:rounded-[42px]'>
               <HelpCircle
                 className='h-20 w-20 sm:h-24 sm:w-24'
@@ -81,7 +96,15 @@ export const CardModal = ({
         </div>
 
         <div className='relative z-10'>
-          {!activeCard ? (
+          {isFinished ? (
+            <button
+              type='button'
+              onClick={onBack}
+              className='flex h-14 w-full items-center justify-center gap-2 rounded-2xl bg-linear-to-br from-fuchsia-500 to-violet-500 text-base font-black shadow-[0_18px_42px_rgba(217,70,239,0.22)] transition hover:-translate-y-0.5 active:translate-y-0'
+            >
+              {t('ui.chooseAnotherType')}
+            </button>
+          ) : !activeCard ? (
             <button
               type='button'
               onClick={onReveal}

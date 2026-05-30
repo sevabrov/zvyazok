@@ -22,7 +22,9 @@
       "spark": "Искра"
     },
     "nextCard": "Следующая карта",
-    "backToMain": "Назад"
+    "backToMain": "Назад",
+    "allCardsDone": "Вы прошли все вопросы в этой категории",
+    "chooseAnotherType": "Выбрать другую категорию"
   },
   "truthCards": {
     "warmth": [

@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ActiveCard, GameType } from './types';
 import { getRandomItem } from './utils';
@@ -16,6 +16,8 @@ export const App = () => {
   const [gameType, setGameType] = useState<GameType | null>(null);
   const [isCardOpen, setIsCardOpen] = useState(false);
   const [activeCard, setActiveCard] = useState<ActiveCard>(null);
+  const [isFinished, setIsFinished] = useState(false);
+  const seenCardsRef = useRef<string[]>([]);
 
   const openGameType = useCallback(() => {
     setIsGameTypeOpen(true);
@@ -29,17 +31,23 @@ export const App = () => {
     setGameType(type);
     setIsGameTypeOpen(false);
     setActiveCard(null);
+    setIsFinished(false);
+    seenCardsRef.current = [];
     setIsCardOpen(true);
   }, []);
 
   const closeCard = useCallback(() => {
     setIsCardOpen(false);
     setActiveCard(null);
+    setIsFinished(false);
+    seenCardsRef.current = [];
   }, []);
 
   const backToGameType = useCallback(() => {
     setIsCardOpen(false);
     setActiveCard(null);
+    setIsFinished(false);
+    seenCardsRef.current = [];
     setIsGameTypeOpen(true);
   }, []);
 
@@ -50,8 +58,20 @@ export const App = () => {
       returnObjects: true,
     }) as string[];
 
+    const remaining = cards.filter(
+      (card) => !seenCardsRef.current.includes(card),
+    );
+
+    if (remaining.length === 0) {
+      setIsFinished(true);
+      return;
+    }
+
+    const nextCard = getRandomItem(remaining);
+    seenCardsRef.current.push(nextCard);
+
     setActiveCard({
-      text: getRandomItem(cards),
+      text: nextCard,
     });
   }, [t, gameType]);
 
@@ -75,6 +95,7 @@ export const App = () => {
         <CardModal
           activeCard={activeCard}
           gameType={gameType}
+          isFinished={isFinished}
           onClose={closeCard}
           onBack={backToGameType}
           onReveal={revealCard}
