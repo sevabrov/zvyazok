@@ -15,6 +15,14 @@
     "truth": "Правда",
     "dare": "Действие",
     "choosePrompt": "Выберите, что хотите открыть сейчас:",
+    "chooseGameType": "Выберите тип игры",
+    "gameTypes": {
+      "warmth": "Тепло",
+      "relationship": "Отношения",
+      "touch": "Прикосновение",
+      "parenthood": "Родительство",
+      "spark": "Искра"
+    },
     "nextCard": "Следующая карта"
   },
   "truthCards": [

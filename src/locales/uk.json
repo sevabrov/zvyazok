@@ -15,6 +15,14 @@
     "truth": "Правда",
     "dare": "Дія",
     "choosePrompt": "Виберіть, що хочете відкрити зараз:",
+    "chooseGameType": "Виберіть тип гри",
+    "gameTypes": {
+      "warmth": "Тепло",
+      "relationship": "Стосунки",
+      "touch": "Дотик",
+      "parenthood": "Батьківство",
+      "spark": "Іскра"
+    },
     "nextCard": "Наступна карта"
   },
   "truthCards": [

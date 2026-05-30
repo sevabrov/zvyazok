@@ -1,20 +1,33 @@
 import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { CardType, ActiveCard } from './types';
+import { CardType, ActiveCard, GameType } from './types';
 import { getRandomItem } from './utils';
 import {
   BackgroundBlobs,
   CardModal,
+  GameTypeSelect,
   Hero,
   LanguageSwitcher,
 } from './components';
 
 export const App = () => {
   const { t } = useTranslation();
+  const [isGameTypeOpen, setIsGameTypeOpen] = useState(false);
+  const [, setGameType] = useState<GameType | null>(null);
   const [isCardOpen, setIsCardOpen] = useState(false);
   const [activeCard, setActiveCard] = useState<ActiveCard>(null);
 
-  const openCard = useCallback(() => {
+  const openGameType = useCallback(() => {
+    setIsGameTypeOpen(true);
+  }, []);
+
+  const closeGameType = useCallback(() => {
+    setIsGameTypeOpen(false);
+  }, []);
+
+  const selectGameType = useCallback((type: GameType) => {
+    setGameType(type);
+    setIsGameTypeOpen(false);
     setActiveCard(null);
     setIsCardOpen(true);
   }, []);
@@ -48,7 +61,11 @@ export const App = () => {
 
       <LanguageSwitcher />
 
-      <Hero onPickCard={openCard} />
+      <Hero onPickCard={openGameType} />
+
+      {isGameTypeOpen && (
+        <GameTypeSelect onClose={closeGameType} onSelect={selectGameType} />
+      )}
 
       {isCardOpen && (
         <CardModal
