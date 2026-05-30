@@ -71,10 +71,6 @@ export const CardModal = ({
         <div className='relative z-10'>
           {!activeCard ? (
             <>
-              <p className='mb-4 text-center text-sm leading-6 text-white/70'>
-                {t('ui.choosePrompt')}
-              </p>
-
               <div className='grid grid-cols-2 gap-3'>
                 <button
                   type='button'
