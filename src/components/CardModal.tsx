@@ -1,11 +1,11 @@
 import { useTranslation } from 'react-i18next';
 import { Heart, HelpCircle, X } from 'lucide-react';
-import { ActiveCard, CardType } from '../types';
+import { ActiveCard } from '../types';
 
 type CardModalProps = {
   activeCard: ActiveCard;
   onClose: () => void;
-  onReveal: (type: CardType) => void;
+  onReveal: () => void;
   onNext: () => void;
 };
 
@@ -51,7 +51,7 @@ export const CardModal = ({
             <div className='animate-text-in'>
               <div className='mb-5 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-4 py-2 text-xs font-black uppercase tracking-[0.22em] text-white/70'>
                 <Heart className='h-4 w-4 text-fuchsia-200' aria-hidden='true' />
-                {t(`ui.${activeCard.type}`)}
+                {t('ui.truth')}
               </div>
 
               <p className='text-[clamp(1.65rem,7vw,2.25rem)] leading-[1.08] font-black tracking-[-0.055em]'>
@@ -65,7 +65,7 @@ export const CardModal = ({
           {!activeCard ? (
             <button
               type='button'
-              onClick={() => onReveal('truth')}
+              onClick={onReveal}
               className='flex h-14 w-full items-center justify-center gap-2 rounded-2xl border border-white/15 bg-white/10 text-base font-black backdrop-blur transition hover:bg-white/15'
             >
               <Heart className='h-5 w-5 text-fuchsia-200' aria-hidden='true' />

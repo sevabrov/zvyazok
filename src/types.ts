@@ -1,5 +1,3 @@
-export type CardType = 'truth';
-
 export type GameType =
   | 'warmth'
   | 'relationship'
@@ -8,6 +6,5 @@ export type GameType =
   | 'spark';
 
 export type ActiveCard = {
-  type: CardType;
   text: string;
 } | null;

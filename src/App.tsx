@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { CardType, ActiveCard, GameType } from './types';
+import { ActiveCard, GameType } from './types';
 import { getRandomItem } from './utils';
 import {
   BackgroundBlobs,
@@ -37,21 +37,17 @@ export const App = () => {
     setActiveCard(null);
   }, []);
 
-  const revealCard = useCallback(
-    (type: CardType) => {
-      if (!gameType) return;
+  const revealCard = useCallback(() => {
+    if (!gameType) return;
 
-      const cards = t(`truthCards.${gameType}`, {
-        returnObjects: true,
-      }) as string[];
+    const cards = t(`truthCards.${gameType}`, {
+      returnObjects: true,
+    }) as string[];
 
-      setActiveCard({
-        type,
-        text: getRandomItem(cards),
-      });
-    },
-    [t, gameType],
-  );
+    setActiveCard({
+      text: getRandomItem(cards),
+    });
+  }, [t, gameType]);
 
   const nextCard = useCallback(() => {
     setActiveCard(null);
