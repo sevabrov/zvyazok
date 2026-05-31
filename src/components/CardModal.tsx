@@ -36,19 +36,25 @@ export const CardModal = ({
           <button
             type='button'
             onClick={onBack}
-            className='relative top-[-10px] left-[-10px] rounded-full border border-white/10 bg-white/10 p-3 text-white/80 backdrop-blur transition hover:bg-white/15'
+            className='relative top-[-10px] left-[-10px] rounded-full bg-black border border-[#d946ef]/45 shadow-[0_0_22px_rgba(217,70,239,0.16)] p-3 text-white/80 backdrop-blur transition hover:bg-black/90'
             aria-label={t('ui.changeGameType')}
           >
-            <ArrowLeft className='h-5 w-5' aria-hidden='true' />
+            <ArrowLeft
+              className='h-5 w-5 text-[#ff6df2] drop-shadow-[0_0_14px_rgba(255,109,242,0.9)]'
+              aria-hidden='true'
+            />
           </button>
 
           <button
             type='button'
             onClick={onClose}
-            className='relative top-[-10px] right-[-10px] rounded-full border border-white/10 bg-white/10 p-3 text-white/80 backdrop-blur transition hover:bg-white/15'
+            className='relative top-[-10px] right-[-10px] rounded-full bg-black/50 border border-[#d946ef]/45 shadow-[0_0_22px_rgba(217,70,239,0.16)] p-3 text-white/80 backdrop-blur transition hover:bg-black/60'
             aria-label={t('ui.closeCard')}
           >
-            <X className='h-5 w-5' aria-hidden='true' />
+            <X
+              className='h-5 w-5 text-[#ff6df2] drop-shadow-[0_0_14px_rgba(255,109,242,0.9)]'
+              aria-hidden='true'
+            />
           </button>
         </div>
         <div className='pointer-events-none absolute inset-0 bg-linear-to-br from-white/20 via-white/5 to-transparent' />
@@ -82,13 +88,13 @@ export const CardModal = ({
             <div className='animate-text-in'>
               <div className='mb-5 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-4 py-2 text-xs font-black uppercase tracking-[0.22em] text-white/70'>
                 <GameTypeIcon
-                  className='h-4 w-4 text-fuchsia-200'
+                  className='h-5 w-5 text-[#ff6df2] drop-shadow-[0_0_14px_rgba(255,109,242,0.9)]'
                   aria-hidden='true'
                 />
                 {t(`ui.gameTypes.${gameType}`)}
               </div>
 
-              <p className='text-[clamp(1.65rem,7vw,2.25rem)] leading-[1.08] font-black tracking-[-0.055em]'>
+              <p className='text-[clamp(1.65rem,7vw,2.25rem)] leading-[1.08] font-black'>
                 {activeCard.text}
               </p>
             </div>
@@ -100,7 +106,7 @@ export const CardModal = ({
             <button
               type='button'
               onClick={onBack}
-              className='flex h-14 w-full items-center justify-center gap-2 rounded-2xl bg-linear-to-br from-fuchsia-500 to-violet-500 text-base font-black shadow-[0_18px_42px_rgba(217,70,239,0.22)] transition hover:-translate-y-0.5 active:translate-y-0'
+              className='flex h-14 w-full items-center justify-center gap-3 bg-black/40 rounded-3xl border border-[#d946ef]/45 px-7 py-5 shadow-[0_0_22px_rgba(217,70,239,0.16)] px-5 text-base font-black backdrop-blur transition hover:-translate-y-0.5 hover:bg-black/50 active:translate-y-0'
             >
               {t('ui.chooseAnotherType')}
             </button>
@@ -108,10 +114,10 @@ export const CardModal = ({
             <button
               type='button'
               onClick={onReveal}
-              className='flex h-14 w-full items-center justify-center gap-2 rounded-2xl border border-white/15 bg-white/10 text-base font-black backdrop-blur transition hover:bg-white/15'
+              className='flex h-14 w-full items-center justify-center gap-3 bg-black/40 rounded-3xl border border-[#d946ef]/45 px-7 py-5 shadow-[0_0_22px_rgba(217,70,239,0.16)] px-5 text-base font-black backdrop-blur transition hover:-translate-y-0.5 hover:bg-black/50 active:translate-y-0'
             >
               <GameTypeIcon
-                className='h-5 w-5 text-fuchsia-200'
+                className='h-5 w-5 text-[#ff6df2] drop-shadow-[0_0_14px_rgba(255,109,242,0.9)]'
                 aria-hidden='true'
               />
               {t('ui.truth')}
@@ -120,7 +126,7 @@ export const CardModal = ({
             <button
               type='button'
               onClick={onNext}
-              className='flex h-14 w-full items-center justify-center gap-2 rounded-2xl bg-linear-to-br from-fuchsia-500 to-violet-500 text-base font-black shadow-[0_18px_42px_rgba(217,70,239,0.22)] transition hover:-translate-y-0.5 active:translate-y-0'
+              className='flex h-14 w-full items-center justify-center gap-3 bg-black/40 rounded-3xl border border-[#d946ef]/45 px-7 py-5 shadow-[0_0_22px_rgba(217,70,239,0.16)] px-5 text-base font-black backdrop-blur transition hover:-translate-y-0.5 hover:bg-black/50 active:translate-y-0'
             >
               {t('ui.nextCard')}
             </button>

@@ -23,7 +23,7 @@ export const GameTypeSelect = ({ onClose, onSelect }: GameTypeSelectProps) => {
         <div className='pointer-events-none absolute -bottom-16 -right-16 h-56 w-56 rounded-full bg-violet-500/45 blur-3xl' />
 
         <div className='relative z-10'>
-          <h2 className='mb-5 text-center text-[clamp(1.5rem,6vw,2rem)] font-black tracking-[-0.055em]'>
+          <h2 className='mb-5 text-center text-[clamp(1.5rem,6vw,2rem)] font-black'>
             {t('ui.chooseGameType')}
           </h2>
 
@@ -36,10 +36,10 @@ export const GameTypeSelect = ({ onClose, onSelect }: GameTypeSelectProps) => {
                   key={id}
                   type='button'
                   onClick={() => onSelect(id)}
-                  className='flex h-14 items-center gap-3 rounded-2xl border border-white/15 bg-white/10 px-5 text-base font-black backdrop-blur transition hover:-translate-y-0.5 hover:bg-white/15 active:translate-y-0'
+                  className='flex h-14 items-center gap-3 bg-black/40 rounded-3xl border border-[#d946ef]/45 px-7 py-5 shadow-[0_0_22px_rgba(217,70,239,0.16)] px-5 text-base font-black backdrop-blur transition hover:-translate-y-0.5 hover:bg-black/50 active:translate-y-0'
                 >
                   <Icon
-                    className='h-5 w-5 text-fuchsia-200'
+                    className='h-5 w-5 text-[#ff6df2] drop-shadow-[0_0_14px_rgba(255,109,242,0.9)]'
                     aria-hidden='true'
                   />
                   {t(`ui.gameTypes.${id}`)}
@@ -49,10 +49,13 @@ export const GameTypeSelect = ({ onClose, onSelect }: GameTypeSelectProps) => {
             <button
               type='button'
               onClick={onClose}
-              className='flex h-14 items-center gap-3 rounded-2xl border border-white/15 bg-white/10 px-5 text-base font-black backdrop-blur transition hover:-translate-y-0.5 hover:bg-white/15 active:translate-y-0'
+              className='flex h-14 items-center gap-3 bg-black/40 rounded-3xl border border-[#d946ef]/45 px-7 py-5 shadow-[0_0_22px_rgba(217,70,239,0.16)] px-5 text-base font-black backdrop-blur transition hover:-translate-y-0.5 hover:bg-black/50 active:translate-y-0'
               aria-label={t('ui.closeCard')}
             >
-              <X className='h-5 w-5' aria-hidden='true' />
+              <X
+                className='h-5 w-5 text-[#ff6df2] drop-shadow-[0_0_14px_rgba(255,109,242,0.9)]'
+                aria-hidden='true'
+              />
               {t('ui.backToMain')}
             </button>
           </div>
