@@ -2,6 +2,8 @@ import { useTranslation } from 'react-i18next';
 import { ArrowLeft, CheckCircle2, HelpCircle, X } from 'lucide-react';
 import { ActiveCard, GameType } from '../types';
 import { GAME_TYPE_ICONS } from '../gameTypes';
+import { usePayment } from '../payment/PaymentContext';
+import { Paywall } from './Paywall';
 
 type CardModalProps = {
   activeCard: ActiveCard;
@@ -23,6 +25,7 @@ export const CardModal = ({
   onNext,
 }: CardModalProps) => {
   const { t } = useTranslation();
+  const { paid } = usePayment();
   const GameTypeIcon = GAME_TYPE_ICONS[gameType];
 
   return (
@@ -63,7 +66,9 @@ export const CardModal = ({
         <div className='pointer-events-none absolute inset-[1px] rounded-[27px] bg-[linear-gradient(rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:34px_34px] [mask-image:linear-gradient(to_bottom,black,transparent_70%)] sm:rounded-[33px]' />
 
         <div className='relative z-10 grid flex-1 place-items-center text-center'>
-          {isFinished ? (
+          {!paid ? (
+            <Paywall />
+          ) : isFinished ? (
             <div className='animate-text-in flex flex-col items-center gap-5'>
               <div className='grid h-32 w-32 place-items-center rounded-[34px] bg-linear-to-br from-fuchsia-500 to-violet-500 shadow-[0_20px_70px_rgba(139,92,246,0.35)] sm:h-40 sm:w-40 sm:rounded-[42px]'>
                 <CheckCircle2
@@ -102,7 +107,7 @@ export const CardModal = ({
         </div>
 
         <div className='relative z-10'>
-          {isFinished ? (
+          {!paid ? null : isFinished ? (
             <button
               type='button'
               onClick={onBack}

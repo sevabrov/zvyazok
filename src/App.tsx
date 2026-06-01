@@ -8,10 +8,13 @@ import {
   GameTypeSelect,
   Hero,
   LanguageSwitcher,
+  SuccessScreen,
 } from './components';
+import { usePayment } from './payment/PaymentContext';
 
 export const App = () => {
   const { t } = useTranslation();
+  const { paid, showSuccess } = usePayment();
   const [isGameTypeOpen, setIsGameTypeOpen] = useState(false);
   const [gameType, setGameType] = useState<GameType | null>(null);
   const [isCardOpen, setIsCardOpen] = useState(false);
@@ -52,7 +55,7 @@ export const App = () => {
   }, []);
 
   const revealCard = useCallback(() => {
-    if (!gameType) return;
+    if (!gameType || !paid) return;
 
     const cards = t(`truthCards.${gameType}`, {
       returnObjects: true,
@@ -73,7 +76,7 @@ export const App = () => {
     setActiveCard({
       text: nextCard,
     });
-  }, [t, gameType]);
+  }, [t, gameType, paid]);
 
   const nextCard = useCallback(() => {
     setActiveCard(null);
@@ -102,6 +105,8 @@ export const App = () => {
           onNext={nextCard}
         />
       )}
+
+      {showSuccess && <SuccessScreen />}
     </main>
   );
 };

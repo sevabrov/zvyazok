@@ -21,10 +21,18 @@
       "parenthood": "Батьківство",
       "spark": "Іскра"
     },
-    "nextCard": "Наступна карта",
+    "nextCard": "Далі",
     "backToMain": "Назад",
     "allCardsDone": "Ви пройшли всі питання в цій категорії",
-    "chooseAnotherType": "Вибрати іншу категорію"
+    "chooseAnotherType": "Вибрати іншу категорію",
+    "payment": {
+      "unlockTitle": "Розблокуйте гру",
+      "unlockDescription": "Одна оплата відкриває всі картки на цьому пристрої.",
+      "payButton": "Оплатити та відкрити",
+      "payButtonPriced": "Оплатити {{price}} та відкрити",
+      "successTitle": "Оплата успішна!",
+      "redirecting": "Повертаємось до гри…"
+    }
   },
   "truthCards": {
     "warmth": [

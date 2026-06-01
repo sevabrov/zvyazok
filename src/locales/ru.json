@@ -21,10 +21,18 @@
       "parenthood": "Родительство",
       "spark": "Искра"
     },
-    "nextCard": "Следующая карта",
+    "nextCard": "Далее",
     "backToMain": "Назад",
     "allCardsDone": "Вы прошли все вопросы в этой категории",
-    "chooseAnotherType": "Выбрать другую категорию"
+    "chooseAnotherType": "Выбрать другую категорию",
+    "payment": {
+      "unlockTitle": "Разблокируйте игру",
+      "unlockDescription": "Одна оплата открывает все карточки на этом устройстве.",
+      "payButton": "Оплатить и открыть",
+      "payButtonPriced": "Оплатить {{price}} и открыть",
+      "successTitle": "Оплата успешна!",
+      "redirecting": "Возвращаемся в игру…"
+    }
   },
   "truthCards": {
     "warmth": [
