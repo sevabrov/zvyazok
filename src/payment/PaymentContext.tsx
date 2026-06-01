@@ -7,7 +7,7 @@ import {
   type ReactNode,
 } from 'react';
 
-const WAYFORPAY_PAYMENT_URL = import.meta.env.VITE_WAYFORPAY_PAYMENT_URL;
+const WAYFORPAY_PAYMENT_URL = 'https://secure.wayforpay.com/button/be2fa005cdbd1';
 
 const PAID_KEY = 'zvyazok_paid';
 const SUCCESS_FLAG = 'payment';

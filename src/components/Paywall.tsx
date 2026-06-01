@@ -2,7 +2,7 @@ import { useTranslation } from 'react-i18next';
 import { Lock } from 'lucide-react';
 import { usePayment } from '../payment/PaymentContext';
 
-const PRICE_LABEL = import.meta.env.VITE_PAYMENT_PRICE_LABEL ?? '';
+const PRICE_LABEL = '3.99 €';
 
 // Shown inside the card slot whenever the player has not paid yet. Card content
 // is never rendered until payment is recorded.
