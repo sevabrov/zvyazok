@@ -4,7 +4,7 @@ export function getRandomItem<T>(items: T[]): T {
 
 const PROGRESS_KEY = 'zvyazok_progress';
 
-type Progress = Record<string, string[]>;
+type Progress = Record<string, number[]>;
 
 function readProgress(): Progress {
   try {
@@ -17,14 +17,18 @@ function readProgress(): Progress {
   }
 }
 
-/** Cards already revealed for a game type, restored from localStorage. */
-export function loadSeenCards(gameType: string): string[] {
+/**
+ * Indices of cards already revealed for a game type, restored from localStorage.
+ * Cards are tracked by index (not text) so progress is shared across languages —
+ * the locale arrays are parallel, so index N is "the same card" in any language.
+ */
+export function loadSeenCards(gameType: string): number[] {
   const seen = readProgress()[gameType];
-  return Array.isArray(seen) ? seen : [];
+  return Array.isArray(seen) ? seen.filter((i) => typeof i === 'number') : [];
 }
 
-/** Persist the revealed cards for a game type so progress survives reloads. */
-export function saveSeenCards(gameType: string, seen: string[]): void {
+/** Persist the revealed card indices for a game type so progress survives reloads. */
+export function saveSeenCards(gameType: string, seen: number[]): void {
   try {
     const progress = readProgress();
     progress[gameType] = seen;

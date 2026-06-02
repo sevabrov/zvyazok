@@ -34,9 +34,7 @@ export const GameTypeSelect = ({ onClose, onSelect }: GameTypeSelectProps) => {
               const cards = t(`truthCards.${id}`, {
                 returnObjects: true,
               }) as string[];
-              const seen = loadSeenCards(id).filter((card) =>
-                cards.includes(card),
-              );
+              const seen = loadSeenCards(id).filter((i) => i < cards.length);
               const isDone = cards.length > 0 && seen.length >= cards.length;
 
               return (
@@ -59,10 +57,16 @@ export const GameTypeSelect = ({ onClose, onSelect }: GameTypeSelectProps) => {
                     aria-hidden='true'
                   />
                   {t(`ui.gameTypes.${id}`)}
-                  {isDone && (
+                  {isDone ? (
                     <span className='ml-auto inline-flex items-center gap-1.5 rounded-full bg-emerald-500/15 font-black text-emerald-300'>
                       <CheckCircle2 className='h-6 w-6' aria-hidden='true' />
                     </span>
+                  ) : (
+                    seen.length > 0 && (
+                      <span className='ml-auto inline-flex items-center rounded-full bg-white/10 px-2.5 py-1 text-xs font-black tabular-nums tracking-[0.12em] text-white/70'>
+                        {seen.length}/{cards.length}
+                      </span>
+                    )
                   )}
                 </button>
               );

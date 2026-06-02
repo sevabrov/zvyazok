@@ -22,7 +22,8 @@ export const App = () => {
   const [isFinished, setIsFinished] = useState(false);
   const [seenCount, setSeenCount] = useState(0);
   const [totalCount, setTotalCount] = useState(0);
-  const seenCardsRef = useRef<string[]>([]);
+  // Revealed card indices for the active game type (indices are language-agnostic).
+  const seenCardsRef = useRef<number[]>([]);
 
   const getCards = useCallback(
     (type: GameType) =>
@@ -41,8 +42,9 @@ export const App = () => {
   const selectGameType = useCallback(
     (type: GameType) => {
       const cards = getCards(type);
-      // Restore previously revealed cards so progress survives reloads.
-      const seen = loadSeenCards(type).filter((card) => cards.includes(card));
+      // Restore previously revealed cards so progress survives reloads and is
+      // shared across languages (indices are parallel between locales).
+      const seen = loadSeenCards(type).filter((i) => i < cards.length);
 
       setGameType(type);
       setIsGameTypeOpen(false);
@@ -76,22 +78,22 @@ export const App = () => {
 
     const cards = getCards(gameType);
 
-    const remaining = cards.filter(
-      (card) => !seenCardsRef.current.includes(card),
-    );
+    const remaining = cards
+      .map((_, index) => index)
+      .filter((index) => !seenCardsRef.current.includes(index));
 
     if (remaining.length === 0) {
       setIsFinished(true);
       return;
     }
 
-    const nextCard = getRandomItem(remaining);
-    seenCardsRef.current.push(nextCard);
+    const nextIndex = getRandomItem(remaining);
+    seenCardsRef.current.push(nextIndex);
     saveSeenCards(gameType, seenCardsRef.current);
     setSeenCount(seenCardsRef.current.length);
 
     setActiveCard({
-      text: nextCard,
+      text: cards[nextIndex],
     });
   }, [getCards, gameType, paid]);
 
