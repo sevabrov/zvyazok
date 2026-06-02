@@ -1,7 +1,7 @@
 import { useCallback, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ActiveCard, GameType } from './types';
-import { getRandomItem } from './utils';
+import { getRandomItem, loadSeenCards, saveSeenCards } from './utils';
 import {
   BackgroundBlobs,
   CardModal,
@@ -20,7 +20,15 @@ export const App = () => {
   const [isCardOpen, setIsCardOpen] = useState(false);
   const [activeCard, setActiveCard] = useState<ActiveCard>(null);
   const [isFinished, setIsFinished] = useState(false);
+  const [seenCount, setSeenCount] = useState(0);
+  const [totalCount, setTotalCount] = useState(0);
   const seenCardsRef = useRef<string[]>([]);
+
+  const getCards = useCallback(
+    (type: GameType) =>
+      t(`truthCards.${type}`, { returnObjects: true }) as string[],
+    [t],
+  );
 
   const openGameType = useCallback(() => {
     setIsGameTypeOpen(true);
@@ -30,14 +38,23 @@ export const App = () => {
     setIsGameTypeOpen(false);
   }, []);
 
-  const selectGameType = useCallback((type: GameType) => {
-    setGameType(type);
-    setIsGameTypeOpen(false);
-    setActiveCard(null);
-    setIsFinished(false);
-    seenCardsRef.current = [];
-    setIsCardOpen(true);
-  }, []);
+  const selectGameType = useCallback(
+    (type: GameType) => {
+      const cards = getCards(type);
+      // Restore previously revealed cards so progress survives reloads.
+      const seen = loadSeenCards(type).filter((card) => cards.includes(card));
+
+      setGameType(type);
+      setIsGameTypeOpen(false);
+      setActiveCard(null);
+      seenCardsRef.current = seen;
+      setSeenCount(seen.length);
+      setTotalCount(cards.length);
+      setIsFinished(cards.length > 0 && seen.length >= cards.length);
+      setIsCardOpen(true);
+    },
+    [getCards],
+  );
 
   const closeCard = useCallback(() => {
     setIsCardOpen(false);
@@ -57,9 +74,7 @@ export const App = () => {
   const revealCard = useCallback(() => {
     if (!gameType || !paid) return;
 
-    const cards = t(`truthCards.${gameType}`, {
-      returnObjects: true,
-    }) as string[];
+    const cards = getCards(gameType);
 
     const remaining = cards.filter(
       (card) => !seenCardsRef.current.includes(card),
@@ -72,11 +87,13 @@ export const App = () => {
 
     const nextCard = getRandomItem(remaining);
     seenCardsRef.current.push(nextCard);
+    saveSeenCards(gameType, seenCardsRef.current);
+    setSeenCount(seenCardsRef.current.length);
 
     setActiveCard({
       text: nextCard,
     });
-  }, [t, gameType, paid]);
+  }, [getCards, gameType, paid]);
 
   const nextCard = useCallback(() => {
     setActiveCard(null);
@@ -99,6 +116,8 @@ export const App = () => {
           activeCard={activeCard}
           gameType={gameType}
           isFinished={isFinished}
+          seenCount={seenCount}
+          totalCount={totalCount}
           onClose={closeCard}
           onBack={backToGameType}
           onReveal={revealCard}

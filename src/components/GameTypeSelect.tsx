@@ -1,7 +1,8 @@
 import { useTranslation } from 'react-i18next';
-import { X } from 'lucide-react';
+import { CheckCircle2, X } from 'lucide-react';
 import { GameType } from '../types';
 import { GAME_TYPE_ICONS, GAME_TYPES } from '../gameTypes';
+import { loadSeenCards } from '../utils';
 
 type GameTypeSelectProps = {
   onClose: () => void;
@@ -30,19 +31,39 @@ export const GameTypeSelect = ({ onClose, onSelect }: GameTypeSelectProps) => {
           <div className='grid gap-3'>
             {GAME_TYPES.map((id) => {
               const Icon = GAME_TYPE_ICONS[id];
+              const cards = t(`truthCards.${id}`, {
+                returnObjects: true,
+              }) as string[];
+              const seen = loadSeenCards(id).filter((card) =>
+                cards.includes(card),
+              );
+              const isDone = cards.length > 0 && seen.length >= cards.length;
 
               return (
                 <button
                   key={id}
                   type='button'
                   onClick={() => onSelect(id)}
-                  className='flex h-14 items-center gap-3 bg-black/40 rounded-3xl border border-[#d946ef]/45 px-7 py-5 shadow-[0_0_22px_rgba(217,70,239,0.16)] px-5 text-base font-black backdrop-blur transition hover:-translate-y-0.5 hover:bg-black/50 active:translate-y-0'
+                  className={`flex h-14 items-center gap-3 rounded-3xl border px-5 py-5 text-base font-black backdrop-blur transition hover:-translate-y-0.5 active:translate-y-0 ${
+                    isDone
+                      ? 'border-emerald-400/50 bg-emerald-500/10 text-white/80 shadow-[0_0_22px_rgba(16,185,129,0.18)] hover:bg-emerald-500/20'
+                      : 'border-[#d946ef]/45 bg-black/40 shadow-[0_0_22px_rgba(217,70,239,0.16)] hover:bg-black/50'
+                  }`}
                 >
                   <Icon
-                    className='h-5 w-5 text-[#ff6df2] drop-shadow-[0_0_14px_rgba(255,109,242,0.9)]'
+                    className={`h-5 w-5 ${
+                      isDone
+                        ? 'text-emerald-300 drop-shadow-[0_0_14px_rgba(16,185,129,0.9)]'
+                        : 'text-[#ff6df2] drop-shadow-[0_0_14px_rgba(255,109,242,0.9)]'
+                    }`}
                     aria-hidden='true'
                   />
                   {t(`ui.gameTypes.${id}`)}
+                  {isDone && (
+                    <span className='ml-auto inline-flex items-center gap-1.5 rounded-full bg-emerald-500/15 font-black text-emerald-300'>
+                      <CheckCircle2 className='h-6 w-6' aria-hidden='true' />
+                    </span>
+                  )}
                 </button>
               );
             })}

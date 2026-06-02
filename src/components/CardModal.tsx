@@ -9,6 +9,8 @@ type CardModalProps = {
   activeCard: ActiveCard;
   gameType: GameType;
   isFinished: boolean;
+  seenCount: number;
+  totalCount: number;
   onClose: () => void;
   onBack: () => void;
   onReveal: () => void;
@@ -19,6 +21,8 @@ export const CardModal = ({
   activeCard,
   gameType,
   isFinished,
+  seenCount,
+  totalCount,
   onClose,
   onBack,
   onReveal,
@@ -47,6 +51,12 @@ export const CardModal = ({
               aria-hidden='true'
             />
           </button>
+
+          {paid && totalCount > 0 && (
+            <span className='relative z-10 inline-flex items-center rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-xs font-black tabular-nums tracking-[0.18em] text-white/70'>
+              {seenCount}/{totalCount}
+            </span>
+          )}
 
           <button
             type='button'
