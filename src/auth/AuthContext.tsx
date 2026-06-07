@@ -24,6 +24,8 @@ interface AuthContextValue {
   paid: boolean;
   /** Exchange a Google ID Token for backend user state. */
   loginWithGoogle: (idToken: string) => Promise<void>;
+  /** Re-fetch the current user from the backend (e.g. after a payment). */
+  refreshUser: () => Promise<void>;
   logout: () => void;
   setUser: (u: UserState) => void;
 }
@@ -80,6 +82,21 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   }, []);
 
+  // Re-pull the user from the backend using the stored session token. Used after
+  // a WayForPay payment so the server-confirmed `isPaid` flips true in-session.
+  // A failed refresh is silent: it just leaves the current state untouched.
+  const refreshUser = useCallback(async () => {
+    const token = getSessionToken();
+    if (!token) return;
+    try {
+      const { user: u, sessionToken } = await restoreSession(token);
+      setSessionToken(sessionToken);
+      setUser(u);
+    } catch {
+      // Ignore — keep the existing user/session.
+    }
+  }, []);
+
   const logout = useCallback(() => {
     clearSessionToken();
     setUser(null);
@@ -93,6 +110,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     error,
     paid: user?.isPaid ?? false,
     loginWithGoogle,
+    refreshUser,
     logout,
     setUser,
   };

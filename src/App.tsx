@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Loader2 } from 'lucide-react';
 import { ActiveCard, GameType } from './types';
 import { GAME_TYPES } from './gameTypes';
 import { getRandomItem, loadSeenCards, saveSeenCards } from './utils';
@@ -10,10 +11,11 @@ import {
   GameTypeSelect,
   Hero,
   LanguageSwitcher,
+  Paywall,
   SuccessScreen,
 } from './components';
 import { useAuth } from './auth/AuthContext';
-import { AccessGate } from './auth/AccessGate';
+import { GoogleLoginButton } from './auth/GoogleLoginButton';
 import { usePayment } from './payment/PaymentContext';
 import { saveProgress } from './game/gameApi';
 
@@ -23,7 +25,7 @@ const SYNC_EVERY = 4;
 
 export const App = () => {
   const { t } = useTranslation();
-  const { status, paid, user } = useAuth();
+  const { status, paid, user, logout } = useAuth();
   const { showSuccess } = usePayment();
   const [isGameTypeOpen, setIsGameTypeOpen] = useState(false);
   const [gameType, setGameType] = useState<GameType | null>(null);
@@ -36,8 +38,6 @@ export const App = () => {
   const seenCardsRef = useRef<number[]>([]);
   // Cards revealed since the last server sync; flushed every SYNC_EVERY.
   const sinceSyncRef = useRef(0);
-
-  const gameAvailable = status === 'authed' && paid;
 
   const getCards = useCallback(
     (type: GameType) =>
@@ -171,7 +171,33 @@ export const App = () => {
 
       <LanguageSwitcher />
 
-      {gameAvailable ? (
+      {/* Gated flow, mirroring CardModal's nested-paywall logic:
+          1) not signed in → Google auth, 2) signed in but unpaid → Paywall,
+          3) signed in and paid → the game. */}
+      {status === 'loading' ? (
+        <div className='animate-text-in flex flex-col items-center gap-4 text-center'>
+          <Loader2 className='h-10 w-10 animate-spin text-[#ff6df2]' aria-hidden='true' />
+          <p className='text-sm text-white/70'>{t('ui.auth.loading')}</p>
+        </div>
+      ) : status !== 'authed' ? (
+        <div className='animate-text-in flex flex-col items-center gap-6 text-center'>
+          <p className='max-w-xs text-sm leading-6 text-white/70'>
+            {status === 'error' ? t('ui.auth.error') : t('ui.auth.signInPrompt')}
+          </p>
+          <GoogleLoginButton />
+        </div>
+      ) : !paid ? (
+        <div className='animate-text-in flex w-full max-w-sm flex-col items-center gap-6 px-2 text-center'>
+          <Paywall />
+          <button
+            type='button'
+            onClick={logout}
+            className='text-xs font-bold text-white/45 underline-offset-4 transition hover:text-white/70 hover:underline'
+          >
+            {t('ui.auth.signOut')}
+          </button>
+        </div>
+      ) : (
         <>
           <Hero onPickCard={openGameType} />
 
@@ -193,8 +219,6 @@ export const App = () => {
             />
           )}
         </>
-      ) : (
-        <AccessGate />
       )}
 
       {showSuccess && <SuccessScreen />}

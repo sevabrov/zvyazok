@@ -6,6 +6,7 @@ import {
   useState,
   type ReactNode,
 } from 'react';
+import { useAuth } from '../auth/AuthContext';
 
 const WAYFORPAY_PAYMENT_URL = 'https://secure.wayforpay.com/button/be2fa005cdbd1';
 
@@ -26,6 +27,7 @@ interface PaymentContextValue {
 const PaymentContext = createContext<PaymentContextValue | null>(null);
 
 export const PaymentProvider = ({ children }: { children: ReactNode }) => {
+  const { refreshUser } = useAuth();
   const [paid, setPaid] = useState(
     () => localStorage.getItem(PAID_KEY) === 'true',
   );
@@ -42,13 +44,17 @@ export const PaymentProvider = ({ children }: { children: ReactNode }) => {
     setPaid(true);
     setShowSuccess(true);
 
+    // Pull the server-confirmed payment state so the game (gated on the backend
+    // `isPaid`) unlocks once the success screen auto-dismisses.
+    void refreshUser();
+
     params.delete(SUCCESS_FLAG);
     const clean =
       window.location.pathname +
       (params.toString() ? `?${params}` : '') +
       window.location.hash;
     window.history.replaceState({}, '', clean);
-  }, []);
+  }, [refreshUser]);
 
   // Auto-return to the game after the success screen has been shown. Keyed on
   // `showSuccess` (not the URL) so it survives StrictMode's double-mount: the
