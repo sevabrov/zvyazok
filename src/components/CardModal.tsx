@@ -2,7 +2,7 @@ import { useTranslation } from 'react-i18next';
 import { ArrowLeft, CheckCircle2, HelpCircle, X } from 'lucide-react';
 import { ActiveCard, GameType } from '../types';
 import { GAME_TYPE_ICONS } from '../gameTypes';
-import { usePayment } from '../payment/PaymentContext';
+import { useAuth } from '../auth/AuthContext';
 import { Paywall } from './Paywall';
 
 type CardModalProps = {
@@ -29,7 +29,7 @@ export const CardModal = ({
   onNext,
 }: CardModalProps) => {
   const { t } = useTranslation();
-  const { paid } = usePayment();
+  const { paid } = useAuth();
   const GameTypeIcon = GAME_TYPE_ICONS[gameType];
 
   return (
