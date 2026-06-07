@@ -40,3 +40,19 @@ export async function restoreSession(token: string): Promise<AuthResult> {
   }
   return (await res.json()) as AuthResult;
 }
+
+/**
+ * Mark the authenticated user as paid after a successful payment, returning the
+ * updated user. The backend reads identity from the session token, not the body.
+ */
+export async function markPaid(token: string): Promise<{ user: UserState }> {
+  const res = await fetch(`${API}/api/mark-paid`, {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({}));
+    throw new Error(body.error ?? `mark-paid failed: ${res.status}`);
+  }
+  return (await res.json()) as { user: UserState };
+}

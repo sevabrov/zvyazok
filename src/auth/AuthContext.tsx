@@ -6,7 +6,7 @@ import {
   useState,
   type ReactNode,
 } from 'react';
-import { fetchMe, restoreSession } from './authApi';
+import { fetchMe, markPaid as markPaidApi, restoreSession } from './authApi';
 import {
   clearSessionToken,
   getSessionToken,
@@ -24,8 +24,8 @@ interface AuthContextValue {
   paid: boolean;
   /** Exchange a Google ID Token for backend user state. */
   loginWithGoogle: (idToken: string) => Promise<void>;
-  /** Re-fetch the current user from the backend (e.g. after a payment). */
-  refreshUser: () => Promise<void>;
+  /** Mark the user paid on the backend (after payment) and update local state. */
+  markPaid: () => Promise<void>;
   logout: () => void;
   setUser: (u: UserState) => void;
 }
@@ -82,18 +82,17 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   }, []);
 
-  // Re-pull the user from the backend using the stored session token. Used after
-  // a WayForPay payment so the server-confirmed `isPaid` flips true in-session.
-  // A failed refresh is silent: it just leaves the current state untouched.
-  const refreshUser = useCallback(async () => {
+  // Mark the user paid on the backend after a successful WayForPay payment, then
+  // update local state from the returned user so the game (gated on `isPaid`)
+  // unlocks in-session. A failure is logged but left silent.
+  const markPaid = useCallback(async () => {
     const token = getSessionToken();
     if (!token) return;
     try {
-      const { user: u, sessionToken } = await restoreSession(token);
-      setSessionToken(sessionToken);
+      const { user: u } = await markPaidApi(token);
       setUser(u);
-    } catch {
-      // Ignore — keep the existing user/session.
+    } catch (e) {
+      console.error('mark paid failed', e);
     }
   }, []);
 
@@ -110,7 +109,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     error,
     paid: user?.isPaid ?? false,
     loginWithGoogle,
-    refreshUser,
+    markPaid,
     logout,
     setUser,
   };

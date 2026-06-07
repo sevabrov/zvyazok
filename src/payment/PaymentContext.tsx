@@ -27,7 +27,7 @@ interface PaymentContextValue {
 const PaymentContext = createContext<PaymentContextValue | null>(null);
 
 export const PaymentProvider = ({ children }: { children: ReactNode }) => {
-  const { refreshUser } = useAuth();
+  const { markPaid } = useAuth();
   const [paid, setPaid] = useState(
     () => localStorage.getItem(PAID_KEY) === 'true',
   );
@@ -44,9 +44,9 @@ export const PaymentProvider = ({ children }: { children: ReactNode }) => {
     setPaid(true);
     setShowSuccess(true);
 
-    // Pull the server-confirmed payment state so the game (gated on the backend
+    // Record the payment on the backend so the game (gated on the backend
     // `isPaid`) unlocks once the success screen auto-dismisses.
-    void refreshUser();
+    void markPaid();
 
     params.delete(SUCCESS_FLAG);
     const clean =
@@ -54,7 +54,7 @@ export const PaymentProvider = ({ children }: { children: ReactNode }) => {
       (params.toString() ? `?${params}` : '') +
       window.location.hash;
     window.history.replaceState({}, '', clean);
-  }, [refreshUser]);
+  }, [markPaid]);
 
   // Auto-return to the game after the success screen has been shown. Keyed on
   // `showSuccess` (not the URL) so it survives StrictMode's double-mount: the
