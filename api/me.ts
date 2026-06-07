@@ -1,8 +1,8 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { applyCors } from './_utils/cors';
-import { verifyGoogleToken } from './_utils/google';
-import { supabase } from './_utils/supabase';
-import { toUserState, type UserRow } from './_utils/types';
+import { applyCors } from './_utils/cors.js';
+import { verifyGoogleToken } from './_utils/google.js';
+import { supabase } from './_utils/supabase.js';
+import { toUserState, type UserRow } from './_utils/types.js';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (applyCors(req, res)) return;
