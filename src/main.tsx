@@ -1,7 +1,9 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
+import { GoogleOAuthProvider } from '@react-oauth/google';
 import { App } from './App';
 import { LegalPage } from './components';
+import { AuthProvider } from './auth/AuthContext';
 import { PaymentProvider } from './payment/PaymentContext';
 import './i18n';
 import './styles.css';
@@ -20,9 +22,13 @@ function Root() {
       return <LegalPage docKey='oferta' />;
     default:
       return (
-        <PaymentProvider>
-          <App />
-        </PaymentProvider>
+        <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
+          <AuthProvider>
+            <PaymentProvider>
+              <App />
+            </PaymentProvider>
+          </AuthProvider>
+        </GoogleOAuthProvider>
       );
   }
 }
