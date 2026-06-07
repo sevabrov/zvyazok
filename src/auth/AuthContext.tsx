@@ -2,10 +2,16 @@ import {
   createContext,
   useCallback,
   useContext,
+  useEffect,
   useState,
   type ReactNode,
 } from 'react';
-import { fetchMe } from './authApi';
+import { fetchMe, restoreSession } from './authApi';
+import {
+  clearSessionToken,
+  getSessionToken,
+  setSessionToken,
+} from './tokenStore';
 import type { UserState } from './types';
 
 export type AuthStatus = 'idle' | 'loading' | 'authed' | 'error';
@@ -13,7 +19,6 @@ export type AuthStatus = 'idle' | 'loading' | 'authed' | 'error';
 interface AuthContextValue {
   status: AuthStatus;
   user: UserState | null;
-  idToken: string | null;
   error: string | null;
   /** True once the backend confirms the user has paid. */
   paid: boolean;
@@ -26,17 +31,47 @@ interface AuthContextValue {
 const AuthContext = createContext<AuthContextValue | null>(null);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [status, setStatus] = useState<AuthStatus>('idle');
+  // Start in 'loading' if we have a stored token to restore, so the UI doesn't
+  // flash the login screen before the session check resolves.
+  const [status, setStatus] = useState<AuthStatus>(() =>
+    getSessionToken() ? 'loading' : 'idle',
+  );
   const [user, setUser] = useState<UserState | null>(null);
-  const [idToken, setIdToken] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+
+  // On mount, restore an existing session from the stored token. This is what
+  // keeps the user logged in across refreshes — no Google popup needed.
+  useEffect(() => {
+    const token = getSessionToken();
+    if (!token) return;
+
+    let cancelled = false;
+    (async () => {
+      try {
+        const { user: u, sessionToken } = await restoreSession(token);
+        if (cancelled) return;
+        setSessionToken(sessionToken); // sliding expiry: keep the latest token
+        setUser(u);
+        setStatus('authed');
+      } catch {
+        if (cancelled) return;
+        // Token expired or invalid — fall back to the login screen.
+        clearSessionToken();
+        setStatus('idle');
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const loginWithGoogle = useCallback(async (token: string) => {
     setStatus('loading');
     setError(null);
     try {
-      const u = await fetchMe(token);
-      setIdToken(token);
+      const { user: u, sessionToken } = await fetchMe(token);
+      setSessionToken(sessionToken);
       setUser(u);
       setStatus('authed');
     } catch (e) {
@@ -46,7 +81,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const logout = useCallback(() => {
-    setIdToken(null);
+    clearSessionToken();
     setUser(null);
     setStatus('idle');
     setError(null);
@@ -55,7 +90,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const value: AuthContextValue = {
     status,
     user,
-    idToken,
     error,
     paid: user?.isPaid ?? false,
     loginWithGoogle,

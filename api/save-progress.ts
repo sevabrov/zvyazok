@@ -1,6 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { applyCors } from './_utils/cors.js';
-import { verifyGoogleToken } from './_utils/google.js';
+import { getSessionUser } from './_utils/session.js';
 import { supabase } from './_utils/supabase.js';
 import type { UserRow } from './_utils/types.js';
 
@@ -10,22 +10,16 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { idToken, usedCards, currentBlock, lastCardId, gameStatus } =
-    req.body ?? {};
-  if (!idToken) return res.status(400).json({ error: 'Missing idToken' });
+  const session = getSessionUser(req);
+  if (!session) return res.status(401).json({ error: 'No valid session' });
 
-  let google;
-  try {
-    google = await verifyGoogleToken(idToken);
-  } catch {
-    return res.status(401).json({ error: 'Invalid Google token' });
-  }
+  const { usedCards, currentBlock, lastCardId, gameStatus } = req.body ?? {};
 
   try {
     const { data: user, error: selErr } = await supabase
       .from('users')
       .select('is_paid')
-      .eq('google_sub', google.sub)
+      .eq('google_sub', session.sub)
       .maybeSingle<Pick<UserRow, 'is_paid'>>();
     if (selErr) throw selErr;
 
@@ -42,7 +36,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const { error: updErr } = await supabase
       .from('users')
       .update(patch)
-      .eq('google_sub', google.sub);
+      .eq('google_sub', session.sub);
     if (updErr) throw updErr;
 
     return res.status(200).json({ success: true });

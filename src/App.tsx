@@ -23,7 +23,7 @@ const SYNC_EVERY = 4;
 
 export const App = () => {
   const { t } = useTranslation();
-  const { status, paid, user, idToken } = useAuth();
+  const { status, paid, user } = useAuth();
   const { showSuccess } = usePayment();
   const [isGameTypeOpen, setIsGameTypeOpen] = useState(false);
   const [gameType, setGameType] = useState<GameType | null>(null);
@@ -68,16 +68,15 @@ export const App = () => {
   // Fire-and-forget server sync. Failures are logged but never break the game.
   const syncProgress = useCallback(
     (block: GameType, lastIndex: number | null, finished: boolean) => {
-      if (!idToken) return;
+      if (status !== 'authed') return;
       saveProgress({
-        idToken,
         usedCards: collectUsedCards(),
         currentBlock: block,
         lastCardId: lastIndex === null ? undefined : String(lastIndex),
         gameStatus: finished ? 'finished' : 'in_progress',
       }).catch((e) => console.error('progress sync failed', e));
     },
-    [collectUsedCards, idToken],
+    [collectUsedCards, status],
   );
 
   const openGameType = useCallback(() => {
