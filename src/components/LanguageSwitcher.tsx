@@ -1,11 +1,16 @@
 import { useTranslation } from 'react-i18next';
 import { languages } from '../i18n';
 
-export const LanguageSwitcher = () => {
+/**
+ * Language pills. By default it floats in the top-right corner (used on the
+ * legal pages); pass `floating={false}` to render just the inline pill so a
+ * parent can position it (e.g. grouped with the user menu in the top bar).
+ */
+export const LanguageSwitcher = ({ floating = true }: { floating?: boolean }) => {
   const { i18n } = useTranslation();
 
-  return (
-    <div className='absolute right-4 top-[max(1rem,env(safe-area-inset-top))] z-1 flex gap-1 rounded-full border border-white/15 bg-white/10 p-1 backdrop-blur'>
+  const pills = (
+    <div className='flex gap-1 rounded-full border border-white/15 bg-white/10 p-1 backdrop-blur'>
       {languages.map((lng) => (
         <button
           key={lng}
@@ -21,6 +26,14 @@ export const LanguageSwitcher = () => {
           {lng}
         </button>
       ))}
+    </div>
+  );
+
+  if (!floating) return pills;
+
+  return (
+    <div className='absolute right-4 top-[max(1rem,env(safe-area-inset-top))] z-1'>
+      {pills}
     </div>
   );
 };

@@ -13,6 +13,7 @@ import {
   LanguageSwitcher,
   Paywall,
   SuccessScreen,
+  UserMenu,
 } from './components';
 import { useAuth } from './auth/AuthContext';
 import { GoogleLoginButton } from './auth/GoogleLoginButton';
@@ -169,7 +170,10 @@ export const App = () => {
     <main className='relative grid min-h-dvh place-items-center overflow-hidden bg-[#080610] px-4 py-8 text-white sm:px-6 [padding-bottom:max(2rem,env(safe-area-inset-bottom))] [padding-top:max(2rem,env(safe-area-inset-top))]'>
       <BackgroundBlobs />
 
-      <LanguageSwitcher />
+      <div className='absolute right-4 top-[max(1rem,env(safe-area-inset-top))] z-20 flex items-center gap-2'>
+        {status === 'authed' && <UserMenu />}
+        <LanguageSwitcher floating={false} />
+      </div>
 
       {/* Gated flow, mirroring CardModal's nested-paywall logic:
           1) not signed in → Google auth, 2) signed in but unpaid → Paywall,

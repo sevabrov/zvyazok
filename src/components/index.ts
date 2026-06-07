@@ -7,6 +7,7 @@ import { LanguageSwitcher } from './LanguageSwitcher';
 import { LegalPage } from './LegalPage';
 import { Paywall } from './Paywall';
 import { SuccessScreen } from './SuccessScreen';
+import { UserMenu } from './UserMenu';
 
 export {
   BackgroundBlobs,
@@ -18,4 +19,5 @@ export {
   LegalPage,
   Paywall,
   SuccessScreen,
+  UserMenu,
 };
