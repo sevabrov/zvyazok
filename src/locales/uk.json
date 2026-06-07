@@ -32,6 +32,13 @@
       "payButtonPriced": "Оплатити {{price}} та відкрити",
       "successTitle": "Оплата успішна!",
       "redirecting": "Повертаємось до гри…"
+    },
+    "footer": {
+      "privacy": "Політика конфіденційності",
+      "oferta": "Публічна оферта"
+    },
+    "legal": {
+      "backToGame": "На головну"
     }
   },
   "truthCards": {

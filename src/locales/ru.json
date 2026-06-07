@@ -32,6 +32,13 @@
       "payButtonPriced": "Оплатить {{price}} и открыть",
       "successTitle": "Оплата успешна!",
       "redirecting": "Возвращаемся в игру…"
+    },
+    "footer": {
+      "privacy": "Политика конфиденциальности",
+      "oferta": "Публичная оферта"
+    },
+    "legal": {
+      "backToGame": "На главную"
     }
   },
   "truthCards": {

@@ -5,6 +5,7 @@ import { getRandomItem, loadSeenCards, saveSeenCards } from './utils';
 import {
   BackgroundBlobs,
   CardModal,
+  Footer,
   GameTypeSelect,
   Hero,
   LanguageSwitcher,
@@ -128,6 +129,8 @@ export const App = () => {
       )}
 
       {showSuccess && <SuccessScreen />}
+
+      <Footer />
     </main>
   );
 };
