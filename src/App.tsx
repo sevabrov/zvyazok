@@ -173,13 +173,22 @@ export const App = () => {
           3) signed in and paid → the game. */}
       {status === 'loading' ? (
         <div className='animate-text-in flex flex-col items-center gap-4 text-center'>
-          <Loader2 className='h-10 w-10 animate-spin text-[#ff6df2]' aria-hidden='true' />
+          <Loader2
+            className='h-10 w-10 animate-spin text-[#ff6df2]'
+            aria-hidden='true'
+          />
           <p className='text-sm text-white/70'>{t('ui.auth.loading')}</p>
         </div>
       ) : status !== 'authed' ? (
         <div className='animate-text-in flex flex-col items-center gap-6 text-center'>
+          <h1 className='text-[clamp(2.3rem,10vw,4rem)] leading-[0.9] font-black tracking-[-0.07em] uppercase text-transparent bg-clip-text bg-linear-to-r from-fuchsia-500 to-violet-500'>
+            {t('ui.titleLine1')}
+          </h1>
+
           <p className='max-w-xs text-sm leading-6 text-white/70'>
-            {status === 'error' ? t('ui.auth.error') : t('ui.auth.signInPrompt')}
+            {status === 'error'
+              ? t('ui.auth.error')
+              : t('ui.auth.signInPrompt')}
           </p>
           <GoogleLoginButton />
         </div>
