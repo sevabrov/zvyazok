@@ -2,14 +2,19 @@ import { useTranslation } from 'react-i18next';
 import { CheckCircle2, X } from 'lucide-react';
 import { GameType } from '../types';
 import { GAME_TYPE_ICONS, GAME_TYPES } from '../gameTypes';
-import { loadSeenCards } from '../utils';
 
 type GameTypeSelectProps = {
+  // Revealed card indices per game type, used to show per-block progress.
+  usedCards: Record<string, number[]>;
   onClose: () => void;
   onSelect: (type: GameType) => void;
 };
 
-export const GameTypeSelect = ({ onClose, onSelect }: GameTypeSelectProps) => {
+export const GameTypeSelect = ({
+  usedCards,
+  onClose,
+  onSelect,
+}: GameTypeSelectProps) => {
   const { t } = useTranslation();
 
   return (
@@ -34,7 +39,9 @@ export const GameTypeSelect = ({ onClose, onSelect }: GameTypeSelectProps) => {
               const cards = t(`truthCards.${id}`, {
                 returnObjects: true,
               }) as string[];
-              const seen = loadSeenCards(id).filter((i) => i < cards.length);
+              const seen = (usedCards[id] ?? []).filter(
+                (i) => i < cards.length,
+              );
               const isDone = cards.length > 0 && seen.length >= cards.length;
 
               return (

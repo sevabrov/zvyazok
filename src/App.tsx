@@ -2,8 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Loader2 } from 'lucide-react';
 import { ActiveCard, GameType } from './types';
-import { GAME_TYPES } from './gameTypes';
-import { getRandomItem, loadSeenCards, saveSeenCards } from './utils';
+import { getRandomItem } from './utils';
 import {
   BackgroundBlobs,
   CardModal,
@@ -37,6 +36,9 @@ export const App = () => {
   const [totalCount, setTotalCount] = useState(0);
   // Revealed card indices for the active game type (indices are language-agnostic).
   const seenCardsRef = useRef<number[]>([]);
+  // In-memory progress map (per game type) — the source of truth, seeded from
+  // the server on login and mutated as cards are revealed, then synced back.
+  const usedCardsRef = useRef<Record<string, number[]>>({});
   // Cards revealed since the last server sync; flushed every SYNC_EVERY.
   const sinceSyncRef = useRef(0);
 
@@ -46,38 +48,25 @@ export const App = () => {
     [t],
   );
 
-  // On login, hydrate the local progress store from the server so the game's
-  // existing index-based mechanic (loadSeenCards) picks it up unchanged. The
-  // server is the source of truth across devices, so it overwrites local.
+  // On login, seed the in-memory progress map from the server, which is the
+  // source of truth across devices.
   useEffect(() => {
     if (status !== 'authed' || !user) return;
-    Object.entries(user.usedCards).forEach(([type, seen]) => {
-      if (Array.isArray(seen)) saveSeenCards(type, seen);
-    });
+    usedCardsRef.current = { ...user.usedCards };
   }, [status, user]);
-
-  // Collect the full per-type progress map, matching the localStorage shape.
-  const collectUsedCards = useCallback(
-    () =>
-      GAME_TYPES.reduce<Record<string, number[]>>((acc, type) => {
-        acc[type] = loadSeenCards(type);
-        return acc;
-      }, {}),
-    [],
-  );
 
   // Fire-and-forget server sync. Failures are logged but never break the game.
   const syncProgress = useCallback(
     (block: GameType, lastIndex: number | null, finished: boolean) => {
       if (status !== 'authed') return;
       saveProgress({
-        usedCards: collectUsedCards(),
+        usedCards: usedCardsRef.current,
         currentBlock: block,
         lastCardId: lastIndex === null ? undefined : String(lastIndex),
         gameStatus: finished ? 'finished' : 'in_progress',
       }).catch((e) => console.error('progress sync failed', e));
     },
-    [collectUsedCards, status],
+    [status],
   );
 
   const openGameType = useCallback(() => {
@@ -93,12 +82,16 @@ export const App = () => {
       const cards = getCards(type);
       // Restore previously revealed cards so progress survives reloads and is
       // shared across languages (indices are parallel between locales).
-      const seen = loadSeenCards(type).filter((i) => i < cards.length);
+      const seen = (usedCardsRef.current[type] ?? []).filter(
+        (i) => i < cards.length,
+      );
 
       setGameType(type);
       setIsGameTypeOpen(false);
       setActiveCard(null);
+      // Share the array reference so reveals mutate the progress map in place.
       seenCardsRef.current = seen;
+      usedCardsRef.current[type] = seen;
       sinceSyncRef.current = 0;
       setSeenCount(seen.length);
       setTotalCount(cards.length);
@@ -146,8 +139,8 @@ export const App = () => {
     }
 
     const nextIndex = getRandomItem(remaining);
+    // Mutates the shared array, so the in-memory progress map updates too.
     seenCardsRef.current.push(nextIndex);
-    saveSeenCards(gameType, seenCardsRef.current);
     setSeenCount(seenCardsRef.current.length);
 
     // Batch the server sync to avoid a request per card.
@@ -206,7 +199,11 @@ export const App = () => {
           <Hero onPickCard={openGameType} />
 
           {isGameTypeOpen && (
-            <GameTypeSelect onClose={closeGameType} onSelect={selectGameType} />
+            <GameTypeSelect
+              usedCards={usedCardsRef.current}
+              onClose={closeGameType}
+              onSelect={selectGameType}
+            />
           )}
 
           {isCardOpen && gameType && (
