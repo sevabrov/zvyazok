@@ -25,6 +25,11 @@
     "backToMain": "Назад",
     "allCardsDone": "Вы прошли все вопросы в этой категории",
     "chooseAnotherType": "Выбрать другую категорию",
+    "resetCategory": "Сбросить категорию",
+    "resetConfirmTitle": "Сбросить категорию?",
+    "resetConfirmMessage": "Весь прогресс в этой категории будет удалён. Это действие нельзя отменить.",
+    "resetConfirm": "Сбросить",
+    "cancel": "Отмена",
     "payment": {
       "unlockTitle": "Разблокируйте игру",
       "unlockDescription": "Одна оплата открывает все карточки на этом устройстве.",

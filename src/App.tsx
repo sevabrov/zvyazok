@@ -34,6 +34,9 @@ export const App = () => {
   const [isFinished, setIsFinished] = useState(false);
   const [seenCount, setSeenCount] = useState(0);
   const [totalCount, setTotalCount] = useState(0);
+  // Bumped to re-render the game-type list after its (ref-backed) progress
+  // changes, e.g. when a completed category is reset.
+  const [, setProgressVersion] = useState(0);
   // Revealed card indices for the active game type (indices are language-agnostic).
   const seenCardsRef = useRef<number[]>([]);
   // In-memory progress map (per game type) — the source of truth, seeded from
@@ -99,6 +102,22 @@ export const App = () => {
       setIsCardOpen(true);
     },
     [getCards],
+  );
+
+  // Wipe a completed category's progress, both in memory and on the server,
+  // then re-render the list so it no longer shows as done.
+  const resetCategory = useCallback(
+    (type: GameType) => {
+      usedCardsRef.current[type] = [];
+      if (gameType === type) {
+        seenCardsRef.current = [];
+        setSeenCount(0);
+        setIsFinished(false);
+      }
+      setProgressVersion((v) => v + 1);
+      syncProgress(type, null, false);
+    },
+    [gameType, syncProgress],
   );
 
   const closeCard = useCallback(() => {
@@ -212,6 +231,7 @@ export const App = () => {
               usedCards={usedCardsRef.current}
               onClose={closeGameType}
               onSelect={selectGameType}
+              onReset={resetCategory}
             />
           )}
 
