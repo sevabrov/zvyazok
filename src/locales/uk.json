@@ -29,7 +29,6 @@
       "unlockTitle": "Розблокуйте гру",
       "unlockDescription": "Одна оплата відкриває всі картки на цьому пристрої.",
       "payButton": "Оплатити та відкрити",
-      "payButtonPriced": "Оплатити {{price}} та відкрити",
       "successTitle": "Оплата успішна!",
       "redirecting": "Повертаємось до гри…"
     },

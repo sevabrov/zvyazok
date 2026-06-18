@@ -2,8 +2,6 @@ import { useTranslation } from 'react-i18next';
 import { Lock } from 'lucide-react';
 import { usePayment } from '../payment/PaymentContext';
 
-const PRICE_LABEL = '19.99 €';
-
 // Shown inside the card slot whenever the player has not paid yet. Card content
 // is never rendered until payment is recorded.
 export const Paywall = () => {
@@ -34,9 +32,7 @@ export const Paywall = () => {
         onClick={startPayment}
         className='flex h-14 w-full items-center justify-center gap-3 rounded-3xl border border-[#d946ef]/45 bg-black/40 px-7 text-base font-black shadow-[0_0_22px_rgba(217,70,239,0.16)] backdrop-blur transition hover:-translate-y-0.5 hover:bg-black/50 active:translate-y-0'
       >
-        {PRICE_LABEL
-          ? t('ui.payment.payButtonPriced', { price: PRICE_LABEL })
-          : t('ui.payment.payButton')}
+        {t('ui.payment.payButton')}
       </button>
     </div>
   );
